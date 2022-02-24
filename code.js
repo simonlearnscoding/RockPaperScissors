@@ -3,6 +3,44 @@
 
  /*   Will randomly return either ‘Rock’, ‘Paper’ or ‘Scissors’.
  We’ll use this function in the game to make the computer’s play.*/
+function playerWonRound(playerSelection, computerSelection) {
+    playerWon++;
+    const score = document.querySelector('#score');
+    score.textContent = `you: ${playerWon} - computer: ${computerWon}`;
+    const p = document.createElement('p');
+    p.textContent = `Congratulations, you won the Round! you played: ${playerSelection } - computer played ${computerSelection}`;
+    score.textContent = `you: ${playerWon} - computer: ${computerWon}`;
+    Billboard.appendChild(p);
+    defineWinner(playerWon, computerWon)
+    return true;
+}
+function computerWonRound(playerSelection, computerSelection) {
+    computerWon++;
+    const score = document.querySelector('#score');
+    score.textContent = `you: ${playerWon} - computer: ${computerWon}`;
+
+    const p = document.createElement('p');
+    p.textContent = `Unfortunately you lost the Round! you played: ${playerSelection } - computer played ${computerSelection}`;
+    score.textContent = `you: ${playerWon} - computer: ${computerWon}`;
+    Billboard.appendChild(p);
+    defineWinner(playerWon, computerWon);
+    return false;
+
+}
+function equalOutcome(playerSelection) {
+    const p = document.createElement('p');
+    p.textContent = `You Both Played: ${playerSelection } you have to replay this round`;
+    Billboard.appendChild(p);
+}
+
+function defineWinner(playerWonRound, computerWonRound){
+ if (playerWonRound == 5) {
+     alert("Congratulations, you won!!");
+     }
+ else if (computerWonRound == 5) {
+     alert("oh no you lost!");
+     }
+}
 function playerSelect() {
 let input = (prompt("type rock / paper / scissors")).toLowerCase();
 let capitalized = input.charAt(0).toUpperCase() + input.slice(1);
@@ -25,93 +63,76 @@ function computerPlay()
 function playRound(playerSelection, computerSelection)
 {
    /*If the Player Played Paper*/
-   if (playerSelection == "Paper") {
+
+    if (playerSelection == "Paper") {
         if (computerSelection == "Rock") {
         /*Player Won Round */
-            alert(`Congratulations, you won the Round! you played: ${playerSelection } - computer played ${computerSelection}`);
-            return true;
+            playerWonRound(playerSelection, computerSelection)
         }
         else if (computerSelection == "Paper") {
         /*Equal */
-            alert(`You Both Played: ${playerSelection } you have to replay this round`);
+           equalOutcome(playerSelection);
+
 
         }
         else {
-            alert(`Unfortunately you lost the Round! you played: ${playerSelection } - computer played ${computerSelection}`);
-            return false;
+            computerWonRound(playerSelection, computerSelection);
         }
 
    }
   else if (playerSelection == "Rock") {
     if (computerSelection == "Scissors") {
     /*Player Won Round */
-        alert(`Congratulations, you won the Round! you played: ${playerSelection } - computer played ${computerSelection}`);
-        return true;
+        playerWonRound(playerSelection, computerSelection);
     }
     else if (computerSelection == "Rock") {
     /*Equal */
-        alert(`You Both Played: ${playerSelection } you have to replay this round`);
+        equalOutcome(playerSelection);
 
     }
     else {
-        alert(`Unfortunately you lost the Round! you played: ${playerSelection } - computer played ${computerSelection}`);
-        return false;
+        computerWonRound(playerSelection, computerSelection);
     }
-
 }
   else if (playerSelection == "Scissors") {
     if (computerSelection == "Paper") {
     /*Player Won Round */
-        alert(`Congratulations, you won the Round! you played: ${playerSelection } - computer played ${computerSelection}`);
-        return true;
+        playerWonRound(playerSelection, computerSelection);
     }
     else if (computerSelection == "Scissors") {
     /*Equal */
-        alert(`You Both Played: ${playerSelection } you have to replay this round`);
+        equalOutcome(playerSelection);
+
 
     }
     else {
-        alert(`Unfortunately you lost the Round! you played: ${playerSelection } - computer played ${computerSelection}`);
-        return false;
+        computerWonRound(playerSelection, computerSelection);
     }
 
 }
 
 
-}
+
 /* keeps score and reports a winner or loser at the end. */
-function game() {
-
-    /*Starts with the score at zero*/
-    let wonTime = 0;
-    let lostTime = 0;
-
-    /*Plays five rounds*/
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = playerSelect();
-        let computerSelection = computerPlay();
-        let won = playRound(playerSelection, computerSelection);
-        if (won == true) {
-         wonTime ++;
-        }
-        else if (won == false) {
-            lostTime ++;
-        }
-    /*check who won the game*/
-    }
-    if (wonTime > lostTime) {
-        alert(`congratulations! you won! Score: you - ${wonTime} / computer - ${lostTime}`);
-    }
-    else if (wonTime === lostTime) {
-        alert(`it's a draw you - ${wonTime} / computer - ${lostTime}`);
-    }
-    else {
-        alert(`unfortunately you lost! Score: you - ${wonTime} / computer - ${lostTime}`);
-    }
-
 
 
 
 }
-game();
+const Billboard = document.querySelector('.Billboard');
+const buttons = document.querySelectorAll('button');
+var playerWon = 0;
+var computerWon = 0;
+const score = document.createElement('p');
+score.setAttribute('id', 'score');
+score.textContent = `you: ${playerWon} - computer: ${computerWon}`;
+Billboard.appendChild(score);
+
+buttons.forEach(button => button.addEventListener('click',function (e) {playRound(button.textContent, computerPlay())
+
+}));
+
+
+
+
+
 
